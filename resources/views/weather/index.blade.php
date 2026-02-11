@@ -68,14 +68,14 @@
                 <tr>
                     <th>日付</th>
                     <th>最高気温 (℃)</th>
-                </tr>
+                    <th>最低気温 (℃)</th> </tr>
             </thead>
             <tbody>
                 @foreach($logs as $log)
                 <tr>
                     <td>{{ $log->date }}</td>
                     <td>{{ $log->max_temp }} ℃</td>
-                </tr>
+                    <td>{{ $log->min_temp }} ℃</td> </tr>
                 @endforeach
             </tbody>
         </table>
@@ -87,12 +87,30 @@
             type: 'line',
             data: {
                 labels: {!! json_encode($logs->pluck('date')) !!},
-                datasets: [{
-                    label: '最高気温 (℃)',
-                    data: {!! json_encode($logs->pluck('max_temp')) !!},
-                    borderColor: 'rgb(255, 99, 132)',
-                    tension: 0.1
-                }]
+                datasets: [
+                    {
+                        label: '最高気温 (℃)',
+                        data: {!! json_encode($logs->pluck('max_temp')) !!},
+                        borderColor: 'rgb(255, 99, 132)', // 赤色
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        tension: 0.1
+                    },
+                    {
+                        // ★ ここから最低気温の線を追加
+                        label: '最低気温 (℃)',
+                        data: {!! json_encode($logs->pluck('min_temp')) !!},
+                        borderColor: 'rgb(54, 162, 235)', // 青色
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                }
             }
         });
     </script>
