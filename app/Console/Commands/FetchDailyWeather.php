@@ -44,6 +44,8 @@ class FetchDailyWeather extends Command
     // }
     public function handle()
 {
+    // ★ これを追加！本物のDB設定（Variablesの設定）を強制的に読み込ませます
+    config(['database.default' => 'mysql']);
     // 2026年1月1日から昨日までを取得対象にする
     $start = Carbon::create(2026, 1, 1);
     $yesterday = Carbon::yesterday();
