@@ -2,6 +2,10 @@
 
 namespace App\Console\Commands;
 
+use LINE\LINEBot;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Models\WeatherLog;
