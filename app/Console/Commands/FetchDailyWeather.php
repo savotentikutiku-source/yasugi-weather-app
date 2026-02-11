@@ -73,6 +73,27 @@ class FetchDailyWeather extends Command
             $this->info("{$formattedDate}: {$temp}℃ を保存完了");
         }
     }
+    $totalTemp = \App\Models\WeatherLog::sum('max_temp');
+
+    // ★ ここから追加：LINE通知のテスト条件
+    if ($totalTemp >= 200) { 
+        // 累積が200度を超えていたらLINEを送る（テスト用）
+        
+        $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(env('LINE_CHANNEL_ACCESS_TOKEN'));
+        $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET')]);
+
+        $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder(
+            "【安来花粉ナビ・テスト】現在の累積温度は " . number_format($totalTemp, 1) . "℃ です！"
+        );
+        
+        $response = $bot->pushMessage(env('LINE_USER_ID'), $textMessageBuilder);
+        
+        if ($response->isSucceeded()) {
+            $this->info("LINE通知を送信しました！");
+        } else {
+            $this->error("LINE通知の送信に失敗しました: " . $response->getRawBody());
+        }
+    }
 
     $this->info("全データの取得が完了しました！");
 }
