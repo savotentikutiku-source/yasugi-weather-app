@@ -80,7 +80,7 @@ class FetchDailyWeather extends Command
     $totalTemp = \App\Models\WeatherLog::sum('max_temp');
 
     // ★ ここから追加：LINE通知のテスト条件
-    if ($totalTemp >= 200) {
+    if ($totalTemp >= 400) {
         // ★ライブラリを使わずに、PHP標準機能でLINEを送る
         $url = 'https://api.line.me/v2/bot/message/push';
         $data = [
