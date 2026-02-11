@@ -9,6 +9,6 @@ class WeatherLog extends Model
 {
     use HasFactory;
 
-    // 以下の1行を追加することで、dateとmax_tempを保存できるようになります
-    protected $fillable = ['date', 'max_temp'];
+    // ★ 'min_temp' を追加して、保存を許可します
+    protected $fillable = ['date', 'max_temp', 'min_temp'];
 }
