@@ -20,3 +20,9 @@ Route::get('/', function () {
 use App\Http\Controllers\WeatherController;
 
 Route::get('/weather', [WeatherController::class, 'index']);
+
+Route::get('/test-line', function () {
+    // データ取得コマンドをこのURLにアクセスした時だけ実行する
+    Artisan::call('weather:fetch');
+    return "安来市のデータ取得とLINE通知コマンドを実行しました！ログを確認してください。";
+});
