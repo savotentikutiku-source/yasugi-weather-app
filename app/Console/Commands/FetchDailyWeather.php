@@ -80,22 +80,38 @@ class FetchDailyWeather extends Command
     $totalTemp = \App\Models\WeatherLog::sum('max_temp');
 
     // ★ ここから追加：LINE通知のテスト条件
-    if ($totalTemp >= 200) { 
-        // 累積が200度を超えていたらLINEを送る（テスト用）
-        
-        $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(env('LINE_CHANNEL_ACCESS_TOKEN'));
-        $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET')]);
+    if ($totalTemp >= 200) {
+        // ★ライブラリを使わずに、PHP標準機能でLINEを送る
+        $url = 'https://api.line.me/v2/bot/message/push';
+        $data = [
+            'to' => env('LINE_USER_ID'),
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' => "【安来花粉ナビ】現在の累積温度は " . number_format($totalTemp, 1) . "℃ です！"
+                ]
+            ]
+        ];
 
-        $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder(
-            "【安来花粉ナビ・テスト】現在の累積温度は " . number_format($totalTemp, 1) . "℃ です！"
-        );
+        $options = [
+            'http' => [
+                'method' => 'POST',
+                'header' => [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer ' . env('LINE_CHANNEL_ACCESS_TOKEN'),
+                ],
+                'content' => json_encode($data),
+            ],
+        ];
+
+        // 実行して結果をログに出す
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
         
-        $response = $bot->pushMessage(env('LINE_USER_ID'), $textMessageBuilder);
-        
-        if ($response->isSucceeded()) {
-            $this->info("LINE通知を送信しました！");
+        if ($result === FALSE) {
+            $this->error("LINE送信に失敗しました。トークンなどを確認してください。");
         } else {
-            $this->error("LINE通知の送信に失敗しました: " . $response->getRawBody());
+            $this->info("LINE送信に成功しました！");
         }
     }
 
