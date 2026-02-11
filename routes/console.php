@@ -18,7 +18,3 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-use Illuminate\Support\Facades\Schedule;
-
-// 毎日 深夜 0:05 に実行する
-Schedule::command('weather:fetch')->dailyAt('00:05');
