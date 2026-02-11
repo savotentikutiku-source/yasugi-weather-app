@@ -13,29 +13,67 @@ class FetchDailyWeather extends Command
     protected $signature = 'weather:fetch';
     protected $description = '安来市の昨日の最高気温を取得して保存します';
 
+    // public function handle()
+    // {
+    //     // 昨日の日付を取得
+    //     $yesterday = Carbon::yesterday()->format('Y-m-d');
+
+    //     $response = Http::get('https://archive-api.open-meteo.com/v1/archive', [
+    //         'latitude' => 35.42,
+    //         'longitude' => 133.23,
+    //         'start_date' => $yesterday,
+    //         'end_date' => $yesterday,
+    //         'daily' => 'temperature_2m_max',
+    //         'timezone' => 'Asia/Tokyo',
+    //     ]);
+
+    //     $data = $response->json();
+    //     $temp = $data['daily']['temperature_2m_max'][0];
+
+    //     // データベースに保存
+    //     WeatherLog::updateOrCreate(
+    //         ['date' => $yesterday],
+    //         ['max_temp' => $temp]
+    //     );
+
+    //     $this->info("{$yesterday} の気温 {$temp}℃ を保存しました！");
+    // }
     public function handle()
-    {
-        // 昨日の日付を取得
-        $yesterday = Carbon::yesterday()->format('Y-m-d');
+{
+    // 2026年1月1日から昨日までを取得対象にする
+    $start = Carbon::create(2026, 1, 1);
+    $yesterday = Carbon::yesterday();
+
+    $this->info("1月1日から昨日までのデータを取得します...");
+
+    // 1日ずつループして取得・保存する
+    for ($date = $start; $date <= $yesterday; $date->addDay()) {
+        $formattedDate = $date->format('Y-m-d');
 
         $response = Http::get('https://archive-api.open-meteo.com/v1/archive', [
             'latitude' => 35.42,
             'longitude' => 133.23,
-            'start_date' => $yesterday,
-            'end_date' => $yesterday,
+            'start_date' => $formattedDate,
+            'end_date' => $formattedDate,
             'daily' => 'temperature_2m_max',
             'timezone' => 'Asia/Tokyo',
         ]);
 
         $data = $response->json();
-        $temp = $data['daily']['temperature_2m_max'][0];
+        
+        // データが存在する場合のみ保存
+        if (isset($data['daily']['temperature_2m_max'][0])) {
+            $temp = $data['daily']['temperature_2m_max'][0];
 
-        // データベースに保存
-        WeatherLog::updateOrCreate(
-            ['date' => $yesterday],
-            ['max_temp' => $temp]
-        );
+            WeatherLog::updateOrCreate(
+                ['date' => $formattedDate],
+                ['max_temp' => $temp]
+            );
 
-        $this->info("{$yesterday} の気温 {$temp}℃ を保存しました！");
+            $this->info("{$formattedDate}: {$temp}℃ を保存完了");
+        }
     }
+
+    $this->info("全データの取得が完了しました！");
+}
 }
