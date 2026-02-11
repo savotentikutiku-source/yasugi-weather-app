@@ -28,8 +28,33 @@
         @endif
     </div>
     <div class="card">
-    <div class="total">現在の累積温度（スギ）: {{ number_format($totalTemp, 1) }} ℃</div>
-    <div class="total" style="color: #8b4513;">ブタクサ用累積（8月〜）: {{ number_format($ragweedTemp, 1) }} ℃</div>
+        <div class="total">現在の累積温度（スギ）: {{ number_format($totalTemp, 1) }} ℃</div>
+        <div class="total" style="color: #8b4513;">ブタクサ用累積（8月〜）: {{ number_format($ragweedTemp, 1) }} ℃</div>
+    </div>
+    <div class="alerts" style="margin-top: 20px;">
+    @if($totalTemp >= 400)
+        <div style="background-color: #ffcccc; color: #cc0000; padding: 15px; border-radius: 8px; border: 2px solid #cc0000; font-weight: bold; margin-bottom: 10px;">
+            【警報】スギ花粉の飛散目安（400℃）に達しました！対策を開始してください。
+        </div>
+    @elseif($totalTemp >= 300)
+        <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; border: 1px solid #ffeeba; margin-bottom: 10px;">
+            【注意】累積温度が300℃を超えました。まもなくスギ花粉が飛び始めます。
+        </div>
+    @else
+        <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb; margin-bottom: 10px;">
+            【安全】スギ花粉の飛散目安まで、あと {{ number_format(400 - $totalTemp, 1) }} ℃ です。
+        </div>
+    @endif
+
+    @if($ragweedTemp >= 500)
+        <div style="background-color: #ffccf2; color: #990066; padding: 15px; border-radius: 8px; border: 2px solid #990066; font-weight: bold;">
+            【警告】ブタクサ花粉の飛散目安に達しました！秋の花粉症に注意してください。
+        </div>
+    @elseif($ragweedTemp > 0)
+        <div style="background-color: #e2e3e5; color: #383d41; padding: 15px; border-radius: 8px; border: 1px solid #d6d8db;">
+            ブタクサ累積計算中...（現在 {{ number_format($ragweedTemp, 1) }} ℃）
+        </div>
+    @endif
 </div>
 
     <div class="card">
