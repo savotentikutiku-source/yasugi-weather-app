@@ -27,6 +27,10 @@
             <div style="text-align:center;">スギ花粉飛散（400℃）まであと: {{ number_format(400 - $totalTemp, 1) }} ℃</div>
         @endif
     </div>
+    <div class="card">
+    <div class="total">現在の累積温度（スギ）: {{ number_format($totalTemp, 1) }} ℃</div>
+    <div class="total" style="color: #8b4513;">ブタクサ用累積（8月〜）: {{ number_format($ragweedTemp, 1) }} ℃</div>
+</div>
 
     <div class="card">
         <canvas id="weatherChart"></canvas>

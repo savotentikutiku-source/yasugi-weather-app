@@ -8,12 +8,14 @@ class WeatherController extends Controller
 {
     public function index()
 {
-    // 全データを日付順に取得
     $logs = \App\Models\WeatherLog::orderBy('date', 'asc')->get();
     
-    // 合計値を計算
-    $totalTemp = $logs->sum('max_temp');
+    // スギ用：1月1日からの合計（現在のコード）
+    $totalTemp = \App\Models\WeatherLog::where('date', '>=', date('Y-01-01'))->sum('max_temp');
 
-    return view('weather.index', compact('logs', 'totalTemp'));
+    // ★追加：ブタクサ用（8月1日からの合計）
+    $ragweedTemp = \App\Models\WeatherLog::where('date', '>=', date('Y-08-01'))->sum('max_temp');
+
+    return view('weather.index', compact('logs', 'totalTemp', 'ragweedTemp'));
 }
 }
