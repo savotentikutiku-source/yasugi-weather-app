@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c491b8531eec05ba41a11d9276a5749",
+    "content-hash": "9f80e80cf38e3a608cb1ce686f901dd7",
     "packages": [
         {
             "name": "brick/math",
@@ -1887,6 +1887,80 @@
                 }
             ],
             "time": "2024-09-21T08:32:55+00:00"
+        },
+        {
+            "name": "linecorp/line-bot-sdk",
+            "version": "v12.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/line/line-bot-sdk-php.git",
+                "reference": "97196e52761bfc264a38a53671fb449b2f5f3b15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/line/line-bot-sdk-php/zipball/97196e52761bfc264a38a53671fb449b2f5f3b15",
+                "reference": "97196e52761bfc264a38a53671fb449b2f5f3b15",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.3",
+                "guzzlehttp/psr7": "^1.7 || ^2.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "*",
+                "phpmd/phpmd": "2.15.0",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^10.2",
+                "squizlabs/php_codesniffer": "4.0.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "LINELiffApi": "LINE\\Laravel\\Facades\\LINELiffApi",
+                        "LINEInsightApi": "LINE\\Laravel\\Facades\\LINEInsightApi",
+                        "LINEMessagingApi": "LINE\\Laravel\\Facades\\LINEMessagingApi",
+                        "LINEMessagingBlobApi": "LINE\\Laravel\\Facades\\LINEMessagingBlobApi",
+                        "LINEManageAudienceApi": "LINE\\Laravel\\Facades\\LINEManageAudienceApi",
+                        "LINEChannelAccessTokenApi": "LINE\\Laravel\\Facades\\LINEChannelAccessTokenApi",
+                        "LINEManageAudienceBlobApi": "LINE\\Laravel\\Facades\\LINEManageAudienceBlobApi"
+                    },
+                    "providers": [
+                        "LINE\\Laravel\\LINEBotServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LINE\\Parser\\": "src/parser/lib/",
+                    "LINE\\Laravel\\": "src/laravel/lib/",
+                    "LINE\\Webhook\\": "src/webhook/lib/",
+                    "LINE\\Constants\\": "src/constants/",
+                    "LINE\\Clients\\Liff\\": "src/clients/liff/lib/",
+                    "LINE\\Clients\\Insight\\": "src/clients/insight/lib/",
+                    "LINE\\Clients\\MessagingApi\\": "src/clients/messaging-api/lib/",
+                    "LINE\\Clients\\ManageAudience\\": "src/clients/manage-audience/lib/",
+                    "LINE\\Clients\\ChannelAccessToken\\": "src/clients/channel-access-token/lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "SDK of the LINE BOT API for PHP",
+            "homepage": "https://github.com/line/line-bot-sdk-php",
+            "keywords": [
+                "bot",
+                "line",
+                "sdk"
+            ],
+            "support": {
+                "docs": "https://line.github.io/line-bot-sdk-php/",
+                "issues": "https://github.com/line/line-bot-sdk-php/issues",
+                "source": "https://github.com/line/line-bot-sdk-php"
+            },
+            "time": "2026-01-21T08:39:31+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -8199,7 +8273,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1"
+        "php": ">=8.1"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
