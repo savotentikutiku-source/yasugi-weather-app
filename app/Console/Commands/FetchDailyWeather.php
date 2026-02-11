@@ -59,7 +59,7 @@ class FetchDailyWeather extends Command
             'longitude' => 133.23,
             'start_date' => $formattedDate,
             'end_date' => $formattedDate,
-            'daily' => 'temperature_2m_max',
+            'daily' => ['temperature_2m_max', 'temperature_2m_min'],
             'timezone' => 'Asia/Tokyo',
         ]);
 
@@ -67,14 +67,15 @@ class FetchDailyWeather extends Command
         
         // データが存在する場合のみ保存
         if (isset($data['daily']['temperature_2m_max'][0])) {
-            $temp = $data['daily']['temperature_2m_max'][0];
+            $maxTemp = $data['daily']['temperature_2m_max'][0];
+            $minTemp = $data['daily']['temperature_2m_min'][0]; // ★最低気温を取り出す
 
             WeatherLog::updateOrCreate(
                 ['date' => $formattedDate],
-                ['max_temp' => $temp]
+                ['max_temp' => $maxTemp, 'min_temp' => $minTemp] // ★最低気温も保存する
             );
 
-            $this->info("{$formattedDate}: {$temp}℃ を保存完了");
+            $this->info("{$formattedDate}: 最高 {$maxTemp}℃、最低 {$minTemp}℃ を保存完了");
         }
     }
     $totalTemp = \App\Models\WeatherLog::sum('max_temp');
