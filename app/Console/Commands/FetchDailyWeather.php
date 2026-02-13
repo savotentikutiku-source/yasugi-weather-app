@@ -82,9 +82,9 @@ class FetchDailyWeather extends Command
         }
     }
     $totalTemp = \App\Models\WeatherLog::sum('max_temp');
-
+    $previousTotal = $totalTemp - $maxTemp;
     // ★ ここから追加：LINE通知のテスト条件
-    if ($totalTemp >= 300) {
+    if ($totalTemp >= 350 && $previousTotal < 350) {
         // ★ライブラリを使わずに、PHP標準機能でLINEを送る
         $url = 'https://api.line.me/v2/bot/message/push';
         $data = [
@@ -92,7 +92,7 @@ class FetchDailyWeather extends Command
             'messages' => [
                 [
                     'type' => 'text',
-                    'text' => "【安来花粉ナビ】現在の累積温度は " . number_format($totalTemp, 1) . "℃ です！"
+                    'text' => "【安来花粉ナビ】現在の累積温度は " . number_format($totalTemp, 1) . "℃ を超えました！"
                 ]
             ]
         ];
